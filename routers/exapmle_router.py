@@ -19,5 +19,6 @@ async def start(message: Message):
 
 
 @router.message()
-async def echo_def(message: Message):
+async def echo(message: Message):
     await message.answer(text=f'{message.text}🤓🤓🤓')
+    # await message.answer(text=f'{message}🤓🤓🤓')

@@ -1,10 +1,9 @@
 from aiogram.enums import ParseMode
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, F
-from aiogram.types import Message
 from aiogram.client.default import DefaultBotProperties
 from routers import router as example_router
-from database import create_tables, drop_tables
+from database import create_tables
 import asyncio
 import os
 
@@ -22,4 +21,7 @@ async def main():
 
 if __name__ == "__main__":
     print('start')
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print('exit')
