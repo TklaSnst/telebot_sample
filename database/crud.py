@@ -14,3 +14,11 @@ async def create_user(async_session: AsyncSession, user_add: UserAddSchema):
             session.add(user_create)
             await session.commit()
             # await session.refresh(user_create)
+
+
+async def get_user_by_uid(async_session: AsyncSession, uid: int):
+    async with async_session() as session:
+        stmt = select(User).where(User.id == uid)
+        result = await session.execute(stmt)
+        user = result.scalar()
+        return user

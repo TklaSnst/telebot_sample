@@ -11,6 +11,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     tg_id: Mapped[int]
     username: Mapped[str] = mapped_column(nullable=False)
+    is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
 
 
 class Item(Base):
