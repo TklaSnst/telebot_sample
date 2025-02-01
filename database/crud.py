@@ -4,7 +4,7 @@ from .schemas import UserAddSchema
 from sqlalchemy import select
 
 
-async def create_user(async_session: AsyncSession, user_add: UserAddSchema):
+async def create_user(async_session: AsyncSession, user_add: UserAddSchema) -> User:
     async with async_session() as session:
         stmt = select(User).where(User.tg_id == user_add.tg_id)
         result = await session.execute(stmt)
@@ -13,7 +13,9 @@ async def create_user(async_session: AsyncSession, user_add: UserAddSchema):
             user_create = User(**user_add.model_dump())
             session.add(user_create)
             await session.commit()
+            return user_create
             # await session.refresh(user_create)
+        return user
 
 
 async def get_user_by_uid(async_session: AsyncSession, uid: int):
@@ -22,3 +24,37 @@ async def get_user_by_uid(async_session: AsyncSession, uid: int):
         result = await session.execute(stmt)
         user = result.scalar()
         return user
+
+
+async def get_user_by_tg_id(async_session: AsyncSession, tg_id: int):
+    async with async_session() as session:
+        stmt = select(User).where(User.tg_id == tg_id)
+        result = await session.execute(stmt)
+        user = result.scalar()
+        return user
+
+
+async def ban_user(async_session: AsyncSession, tg_id: int):
+    async with async_session() as session:
+        try:
+            stmt = select(User).where(User.tg_id == tg_id)
+            result = await session.execute(stmt)
+            user = result.scalar()
+            user.is_active = False
+            await session.commit()
+            return "usr banned"
+        except Exception as ex:
+            return "smthng wrong"
+
+
+async def unban_user(async_session: AsyncSession, tg_id: int):
+    async with async_session() as session:
+        try:
+            stmt = select(User).where(User.tg_id == tg_id)
+            result = await session.execute(stmt)
+            user = result.scalar()
+            user.is_active = True
+            await session.commit()
+            return "usr unbanned"
+        except Exception as ex:
+            return "smthng wrong"

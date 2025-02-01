@@ -24,3 +24,22 @@ admin_panel_main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='ban user by uid'), KeyboardButton(text='ban user by tg id')],
     [KeyboardButton(text='return')]
 ], resize_keyboard=True)
+
+
+async def get_user_actions_kb(is_active, tg_id):
+    admin_unbanned_user_actions = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='ban user', callback_data=f'ban_{tg_id}')],
+        [InlineKeyboardButton(text='some info', callback_data=f'get_some_user_info_{tg_id}')]
+    ])
+    admin_banned_user_actions = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='unban user', callback_data=f'unban_{tg_id}')],
+        [InlineKeyboardButton(text='some info', callback_data=f'get_some_user_info_{tg_id}')]
+    ])
+    if is_active:
+        return admin_unbanned_user_actions
+    return admin_banned_user_actions
+
+
+return_to_main = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='Вернуться на главную')]
+], resize_keyboard=True)
