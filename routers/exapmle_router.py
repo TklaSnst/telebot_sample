@@ -15,15 +15,14 @@ async def start(message: Message):
     await message.delete()
     try:
         user = UserAddSchema(tg_id=message.from_user.id, username=message.from_user.username)
-        data = await create_user(async_session=async_session, user_add=user)
+        await create_user(async_session=async_session, user_add=user)
     except Exception as ex:
         raise ex
-    if data.is_active:
-        env_data = await get_env_data()
-        adm_ids = map(int, env_data["ADM_IDS"].split(','))
-        if message.from_user.id in adm_ids:
-            return await message.answer(text=f'Hello, {message.from_user.username}!', reply_markup=start_kb_admin)
-        return await message.answer(text=f'Hello, {message.from_user.username}!', reply_markup=start_kb)
+    env_data = await get_env_data()
+    adm_ids = map(int, env_data["ADM_IDS"].split(','))
+    if message.from_user.id in adm_ids:
+        return await message.answer(text=f'Hello, {message.from_user.username}!', reply_markup=start_kb_admin)
+    return await message.answer(text=f'Hello, {message.from_user.username}!', reply_markup=start_kb)
 
 
 # @router.message()

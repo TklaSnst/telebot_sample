@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from routers import router as example_router, admin_router
 from database import create_tables, drop_tables
+from middlewares import AuthMiddleware
 import sys
 import logging
 import asyncio
@@ -15,6 +16,7 @@ dp = Dispatcher()
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp.include_router(example_router)
 dp.include_router(admin_router)
+dp.message.outer_middleware.register(AuthMiddleware())
 
 
 async def main():
