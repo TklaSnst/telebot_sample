@@ -58,3 +58,14 @@ async def unban_user(async_session: AsyncSession, tg_id: int):
             return "usr unbanned"
         except Exception as ex:
             return "smthng wrong"
+
+
+async def get_all_banned(async_session: AsyncSession) -> list[User] | None:
+    async with async_session() as session:
+        try:
+            stmt = select(User).where(User.is_active == False)
+            result = await session.execute(stmt)
+            users = result.scalars()
+            return users
+        except Exception as ex:
+            return None

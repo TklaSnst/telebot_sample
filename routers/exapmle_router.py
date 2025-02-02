@@ -11,6 +11,7 @@ router = Router()
 
 @router.message(Command("start"))
 @router.message(F.text == "Вернуться на главную")
+@router.message(F.text == "return")
 async def start(message: Message):
     await message.delete()
     try:

@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 from support import get_env_data
-from database import get_user_by_uid, async_session, ban_user, unban_user
+from database import get_user_by_uid, async_session, ban_user, unban_user, get_all_banned
 from keyboards import admin_panel_main, get_user_actions_kb, return_to_main
 import hashlib
 import os
@@ -81,3 +81,16 @@ async def adm_unban_user(callback: CallbackQuery):
     if callback.from_user.id in adm_ids:
         response = await unban_user(async_session=async_session, tg_id=int(tg_id))
         return callback.message.answer(text=response, reply_markup=return_to_main)
+
+
+@router.message(F.text == "get all banned users")
+async def adm_get_all_banned(message: Message):
+    adm_ids = await get_adm_ids()
+    if message.from_user.id in adm_ids:
+        users = await get_all_banned(async_session=async_session)
+        mes = ''
+        if users is None:
+            return await message.answer(text='Список пуст')
+        for user in users:
+            mes += f'id: {user.id}; tg_id: {user.tg_id}; username: {user.username}\n'
+        return await message.answer(text=mes, reply_markup=return_to_main)
