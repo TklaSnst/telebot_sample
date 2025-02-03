@@ -1,12 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from .models import Base
 from dotenv import load_dotenv
+from redis.asyncio import Redis
 import os
 
 load_dotenv()
 
 engine = create_async_engine(os.getenv('DB_URL'))
 async_session = async_sessionmaker(engine)
+
+redis_client = Redis(port=6379, db=0, decode_responses=True)
 
 
 async def create_tables():
