@@ -14,6 +14,12 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
 
 
+class Admin(Base):
+    __tablename__ = 'admins'
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    tg_id: Mapped[int] = mapped_column(ForeignKey(User.tg_id), nullable=True)
+
+
 class Item(Base):
     __tablename__ = 'items'
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

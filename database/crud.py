@@ -1,8 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import User
+from .models import User, Admin
 from .schemas import UserAddSchema, UserGetSchema
 from sqlalchemy import select
 from .database import redis_client
+
+
+async def get_adm_ids(async_session: AsyncSession) -> list[int]:
+    async with async_session() as session:
+        adm_ids = []
+        admins = await session.execute(select(Admin)).scalars()
+        for admin in admins:
+            adm_ids.append(admin.tg_id)
+        return adm_ids
 
 
 async def create_user(async_session: AsyncSession, user_add: UserAddSchema) -> User:

@@ -21,8 +21,7 @@ start_kb_admin = InlineKeyboardMarkup(inline_keyboard=[
 
 admin_panel_main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='get user by uid'), KeyboardButton(text='get user by tg id')],
-    [KeyboardButton(text='get all banned users')],
-    [KeyboardButton(text='add admin')],
+    [KeyboardButton(text='get all banned users'), KeyboardButton(text='add admin')],
     [KeyboardButton(text='return')]
 ], resize_keyboard=True)
 
